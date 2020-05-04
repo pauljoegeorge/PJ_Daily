@@ -49,8 +49,8 @@ A serverless project for daily meeting related or quick notes
       - for more info:
         - https://rubyonjets.com/docs/considerations/vpc/
      - Finally deploy:
-       - JETS_ENV=development JETS_REMOTE_ENV=1 AWS_PROFILE={AWS_PROFILE} bundle exec jets deploy
+       - `$ JETS_ENV=development JETS_REMOTE_ENV=1 AWS_PROFILE={AWS_PROFILE} bundle exec jets deploy`
      
      
 ## Delete deployment: 
-  JETS_ENV=development JETS_REMOTE_ENV=1 AWS_PROFILE={AWS_PROFILE} bundle exec jets delete
+  `$ JETS_ENV=development JETS_REMOTE_ENV=1 AWS_PROFILE={AWS_PROFILE} bundle exec jets delete`
