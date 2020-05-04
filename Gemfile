@@ -14,7 +14,7 @@ gem "dynomite"
 # development and test groups are not bundled as part of the deployment
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', '11.1.2', platforms: [:mri, :mingw, :x64_mingw]
   gem 'shotgun'
   gem 'rack'
   gem 'puma'

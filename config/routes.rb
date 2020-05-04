@@ -3,8 +3,8 @@ Jets.application.routes.draw do
 
   scope :db do
     post 'migrate', to: "database#migrate"
-    post 'seed', to: "database#load_data"
-    post 'reset', to: "database#delete"
+    post 'seed',    to: "database#load_data"
+    post 'reset',   to: "database#reset"
   end
   # The jets/public#show controller can serve static utf8 content out of the public folder.
   # Note, as part of the deploy process Jets uploads files in the public folder to s3

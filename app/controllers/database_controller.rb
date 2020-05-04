@@ -1,6 +1,6 @@
 class DatabaseController < ApplicationController
 # POST /migrate
-  timeout 1200
+  timeout 900
   def migrate
     env = ENV['JETS_ENV'] || 'development'
     logger = Logger.new(STDOUT)
@@ -31,6 +31,28 @@ class DatabaseController < ApplicationController
     render json: { result:"success" }
   end
 
+  def load_data
+    if %(development).include? Jets.env
+      load(Jets.root.join("db", "seeds.rb"))
+      render json: { result:"success" }
+    end
+  end
+
+  #delete all records from DB
+  def reset
+    if %(development).include? Jets.env
+      tables = []
+      ActiveRecord::Base.connection.execute("show tables").each { |r| tables << r[0] }
+      tables = tables - ["schema_migrations"]
+      tables.each do |table|
+        ActiveRecord::Base.connection.execute("set foreign_key_checks = 0;")
+        ActiveRecord::Base.connection.execute("truncate #{table}")
+        ActiveRecord::Base.connection.execute("set foreign_key_checks = 1;")
+      end
+      render json: { result:"success" }
+    end
+  end
+
   private
 
   def connect(config)
@@ -46,27 +68,5 @@ class DatabaseController < ApplicationController
   rescue ActiveRecord::Tasks::DatabaseAlreadyExists => error
     # do nothing
     puts "Database #{config['database']} already exists"
-  end
-
-  def load_data
-    if %(development).include? Jets.env
-      load(Jets.root.join("db", "seeds.rb"))
-      render json: { result:"success" }
-    end
-  end
-
-  #delete all records from DB
-  def delete
-    if %(development).include? Jets.env
-      tables = []
-      ActiveRecord::Base.connection.execute("show tables").each { |r| tables << r[0] }
-      tables = tables - ["schema_migrations"]
-      tables.each do |table|
-        ActiveRecord::Base.connection.execute("set foreign_key_checks = 0;")
-        ActiveRecord::Base.connection.execute("truncate #{table}")
-        ActiveRecord::Base.connection.execute("set foreign_key_checks = 1;")
-      end
-      render json: { result:"success" }
-    end
   end
 end
